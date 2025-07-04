@@ -1,32 +1,1079 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <link rel="stylesheet" href="styles.css" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>PakePlus App</title>
-        <script type="module" src="/main.js" defer></script>
-    </head>
+<html lang="zh-CN">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   落地页管理系统
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <script src="https://unpkg.com/echarts@5.4.3/dist/echarts.min.js">
+  </script>
+  <style>
+   /* 自定义滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+  </style>
+ </head>
+ <body class="bg-gray-100 font-sans antialiased">
+  <div class="flex h-screen">
+   <!-- 侧边栏 -->
+   <aside class="w-64 bg-gray-800 text-white p-6 flex flex-col shadow-lg">
+    <div class="text-2xl font-bold mb-8 text-center">
+     <i class="fas fa-rocket mr-2">
+     </i>
+     落地页管理
+    </div>
+    <nav class="flex-grow">
+     <ul>
+      <li class="mb-4">
+       <a class="flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200" href="javascript:void(0);" onclick="showSection('dashboard')">
+        <i class="fas fa-tachometer-alt mr-3">
+        </i>
+        仪表盘
+       </a>
+      </li>
+      <li class="mb-4 admin-only hidden">
+       <a class="flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200" href="javascript:void(0);" onclick="showSection('user-management')">
+        <i class="fas fa-users mr-3">
+        </i>
+        人员管理
+       </a>
+      </li>
+      <li class="mb-4">
+       <a class="flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200" href="javascript:void(0);" onclick="showSection('template-management')">
+        <i class="fas fa-folder-open mr-3">
+        </i>
+        模板管理
+       </a>
+      </li>
+      <li class="mb-4">
+       <a class="flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200" href="javascript:void(0);" onclick="showSection('landing-page-management')">
+        <i class="fas fa-file-alt mr-3">
+        </i>
+        落地页管理
+       </a>
+      </li>
+      <li class="mb-4 admin-only hidden">
+       <a class="flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200" href="javascript:void(0);" onclick="showSection('landing-page-audit')">
+        <i class="fas fa-check-circle mr-3">
+        </i>
+        落地页审核
+       </a>
+      </li>
+      <li class="mb-4">
+       <a class="flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200" href="javascript:void(0);" onclick="showSection('system-logs')">
+        <i class="fas fa-clipboard-list mr-3">
+        </i>
+        系统日志
+       </a>
+      </li>
+     </ul>
+    </nav>
+    <div class="mt-auto pt-6 border-t border-gray-700">
+     <a class="flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200" href="javascript:void(0);">
+      <i class="fas fa-sign-out-alt mr-3">
+      </i>
+      退出登录
+     </a>
+    </div>
+   </aside>
+   <!-- 主内容区域 -->
+   <main class="flex-1 flex flex-col overflow-hidden">
+    <!-- 顶部导航栏 -->
+    <header class="bg-white shadow-md p-4 flex justify-between items-center z-10">
+     <h1 class="text-3xl font-semibold text-gray-800" id="page-title">
+      仪表盘
+     </h1>
+     <div class="flex items-center">
+      <span class="text-gray-700 mr-4">
+       欢迎,
+       <span class="font-medium" id="username">
+        Admin
+       </span>
+      </span>
+      <img alt="User Avatar" class="w-10 h-10 rounded-full object-cover border-2 border-blue-500" src="https://design.gemcoder.com/staticResource/echoAiSystemImages/e8b6d50c2929f7545c40ca80930c26e1.png"/>
+     </div>
+    </header>
+    <!-- 内容区域 -->
+    <div class="flex-1 overflow-y-auto p-6 bg-gray-100">
+     <!-- 仪表盘 -->
+     <section class="content-section active" id="dashboard">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+       <div class="bg-white p-6 rounded-lg shadow-md flex items-center justify-between">
+        <div>
+         <p class="text-gray-500 text-sm">
+          总落地页数
+         </p>
+         <p class="text-3xl font-bold text-gray-800">
+          1,234
+         </p>
+        </div>
+        <i class="fas fa-file-alt text-blue-500 text-4xl">
+        </i>
+       </div>
+       <div class="bg-white p-6 rounded-lg shadow-md flex items-center justify-between">
+        <div>
+         <p class="text-gray-500 text-sm">
+          待审核落地页
+         </p>
+         <p class="text-3xl font-bold text-gray-800">
+          56
+         </p>
+        </div>
+        <i class="fas fa-hourglass-half text-yellow-500 text-4xl">
+        </i>
+       </div>
+       <div class="bg-white p-6 rounded-lg shadow-md flex items-center justify-between">
+        <div>
+         <p class="text-gray-500 text-sm">
+          已发布落地页
+         </p>
+         <p class="text-3xl font-bold text-gray-800">
+          1,100
+         </p>
+        </div>
+        <i class="fas fa-globe text-green-500 text-4xl">
+        </i>
+       </div>
+       <div class="bg-white p-6 rounded-lg shadow-md flex items-center justify-between">
+        <div>
+         <p class="text-gray-500 text-sm">
+          活跃用户
+         </p>
+         <p class="text-3xl font-bold text-gray-800">
+          128
+         </p>
+        </div>
+        <i class="fas fa-users text-purple-500 text-4xl">
+        </i>
+       </div>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+       <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-xl font-semibold mb-4 text-gray-800">
+         落地页发布趋势
+        </h3>
+        <div class="w-full h-80" id="landingPageTrendChart">
+        </div>
+       </div>
+       <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-xl font-semibold mb-4 text-gray-800">
+         落地页状态分布
+        </h3>
+        <div class="w-full h-80" id="landingPageStatusChart">
+        </div>
+       </div>
+      </div>
+     </section>
+     <!-- 人员管理 -->
+     <section class="content-section hidden" id="user-management">
+      <div class="bg-white p-6 rounded-lg shadow-md">
+       <h2 class="text-2xl font-semibold mb-6 text-gray-800">
+        人员管理
+       </h2>
+       <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md mb-4 flex items-center" onclick="openModal('add-user-modal')">
+        <i class="fas fa-plus mr-2">
+        </i>
+        创建新账户
+       </button>
+       <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+         <thead>
+          <tr class="bg-gray-100 text-left text-gray-600 uppercase text-sm leading-normal">
+           <th class="py-3 px-6">
+            用户名
+           </th>
+           <th class="py-3 px-6">
+            角色
+           </th>
+           <th class="py-3 px-6">
+            创建时间
+           </th>
+           <th class="py-3 px-6">
+            操作
+           </th>
+          </tr>
+         </thead>
+         <tbody class="text-gray-700 text-sm font-light">
+          <tr class="border-b border-gray-200 hover:bg-gray-50">
+           <td class="py-3 px-6">
+            admin
+           </td>
+           <td class="py-3 px-6">
+            超管
+           </td>
+           <td class="py-3 px-6">
+            2023-01-01 10:00:00
+           </td>
+           <td class="py-3 px-6">
+            <button class="text-blue-500 hover:text-blue-700 mr-3" onclick="openModal('edit-user-modal', {username: 'admin', role: 'admin'})">
+             <i class="fas fa-edit">
+             </i>
+            </button>
+            <button class="text-red-500 hover:text-red-700" onclick="deleteUser('admin')">
+             <i class="fas fa-trash-alt">
+             </i>
+            </button>
+           </td>
+          </tr>
+          <tr class="border-b border-gray-200 hover:bg-gray-50">
+           <td class="py-3 px-6">
+            user1
+           </td>
+           <td class="py-3 px-6">
+            普通用户
+           </td>
+           <td class="py-3 px-6">
+            2023-03-15 14:30:00
+           </td>
+           <td class="py-3 px-6">
+            <button class="text-blue-500 hover:text-blue-700 mr-3" onclick="openModal('edit-user-modal', {username: 'user1', role: 'user'})">
+             <i class="fas fa-edit">
+             </i>
+            </button>
+            <button class="text-red-500 hover:text-red-700" onclick="deleteUser('user1')">
+             <i class="fas fa-trash-alt">
+             </i>
+            </button>
+           </td>
+          </tr>
+          <!-- 更多用户行 -->
+         </tbody>
+        </table>
+       </div>
+      </div>
+     </section>
+     <!-- 落地页模板管理 -->
+     <section class="content-section hidden" id="template-management">
+      <div class="bg-white p-6 rounded-lg shadow-md">
+       <h2 class="text-2xl font-semibold mb-6 text-gray-800">
+        落地页模板管理
+       </h2>
+       <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md mb-4 flex items-center" onclick="openModal('upload-template-modal')">
+        <i class="fas fa-upload mr-2">
+        </i>
+        上传模板
+       </button>
+       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- 模板卡片示例 -->
+        <div class="bg-gray-50 border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+         <img alt="Template 1" class="w-full h-48 object-cover" src="https://design.gemcoder.com/staticResource/echoAiSystemImages/828c2d3f4b4db6bd4497b80ee34a9a6d.png"/>
+         <div class="p-4">
+          <h3 class="text-lg font-semibold text-gray-800 mb-2">
+           简约商务模板
+          </h3>
+          <p class="text-gray-600 text-sm mb-3">
+           适用于企业官网、产品介绍等。
+          </p>
+          <div class="flex justify-end space-x-2">
+           <button class="text-blue-500 hover:text-blue-700" onclick="editTemplate('简约商务模板')">
+            <i class="fas fa-edit">
+            </i>
+            修改
+           </button>
+           <button class="text-red-500 hover:text-red-700" onclick="deleteTemplate('简约商务模板')">
+            <i class="fas fa-trash-alt">
+            </i>
+            删除
+           </button>
+          </div>
+         </div>
+        </div>
+        <div class="bg-gray-50 border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+         <img alt="Template 2" class="w-full h-48 object-cover" src="https://design.gemcoder.com/staticResource/echoAiSystemImages/4bc32da4c0e6da7af1fc13a5f6d3e782.png"/>
+         <div class="p-4">
+          <h3 class="text-lg font-semibold text-gray-800 mb-2">
+           创意活动模板
+          </h3>
+          <p class="text-gray-600 text-sm mb-3">
+           适用于线上活动、促销宣传等。
+          </p>
+          <div class="flex justify-end space-x-2">
+           <button class="text-blue-500 hover:text-blue-700" onclick="editTemplate('创意活动模板')">
+            <i class="fas fa-edit">
+            </i>
+            修改
+           </button>
+           <button class="text-red-500 hover:text-red-700" onclick="deleteTemplate('创意活动模板')">
+            <i class="fas fa-trash-alt">
+            </i>
+            删除
+           </button>
+          </div>
+         </div>
+        </div>
+        <!-- 更多模板卡片 -->
+       </div>
+      </div>
+     </section>
+     <!-- 落地页管理 -->
+     <section class="content-section hidden" id="landing-page-management">
+      <div class="bg-white p-6 rounded-lg shadow-md">
+       <h2 class="text-2xl font-semibold mb-6 text-gray-800">
+        落地页管理
+       </h2>
+       <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md mb-4 flex items-center" onclick="openModal('create-landing-page-modal')">
+        <i class="fas fa-plus mr-2">
+        </i>
+        制作新落地页
+       </button>
+       <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+         <thead>
+          <tr class="bg-gray-100 text-left text-gray-600 uppercase text-sm leading-normal">
+           <th class="py-3 px-6">
+            落地页名称
+           </th>
+           <th class="py-3 px-6">
+            模板
+           </th>
+           <th class="py-3 px-6">
+            状态
+           </th>
+           <th class="py-3 px-6">
+            创建人
+           </th>
+           <th class="py-3 px-6">
+            创建时间
+           </th>
+           <th class="py-3 px-6">
+            更新人
+           </th>
+           <th class="py-3 px-6">
+            更新时间
+           </th>
+           <th class="py-3 px-6">
+            操作
+           </th>
+          </tr>
+         </thead>
+         <tbody class="text-gray-700 text-sm font-light">
+          <tr class="border-b border-gray-200 hover:bg-gray-50">
+           <td class="py-3 px-6">
+            产品发布会
+           </td>
+           <td class="py-3 px-6">
+            简约商务模板
+           </td>
+           <td class="py-3 px-6">
+            <span class="bg-yellow-200 text-yellow-800 py-1 px-3 rounded-full text-xs">
+             待审核
+            </span>
+           </td>
+           <td class="py-3 px-6">
+            user1
+           </td>
+           <td class="py-3 px-6">
+            2023-05-01 09:00:00
+           </td>
+           <td class="py-3 px-6">
+            user1
+           </td>
+           <td class="py-3 px-6">
+            2023-05-01 09:00:00
+           </td>
+           <td class="py-3 px-6">
+            <button class="text-blue-500 hover:text-blue-700 mr-3" onclick="editLandingPage('产品发布会')">
+             <i class="fas fa-edit">
+             </i>
+            </button>
+            <button class="text-red-500 hover:text-red-700" onclick="deleteLandingPage('产品发布会')">
+             <i class="fas fa-trash-alt">
+             </i>
+            </button>
+           </td>
+          </tr>
+          <tr class="border-b border-gray-200 hover:bg-gray-50">
+           <td class="py-3 px-6">
+            夏季促销活动
+           </td>
+           <td class="py-3 px-6">
+            创意活动模板
+           </td>
+           <td class="py-3 px-6">
+            <span class="bg-green-200 text-green-800 py-1 px-3 rounded-full text-xs">
+             已发布
+            </span>
+           </td>
+           <td class="py-3 px-6">
+            user2
+           </td>
+           <td class="py-3 px-6">
+            2023-04-10 11:30:00
+           </td>
+           <td class="py-3 px-6">
+            admin
+           </td>
+           <td class="py-3 px-6">
+            2023-04-12 16:00:00
+           </td>
+           <td class="py-3 px-6">
+            <button class="text-blue-500 hover:text-blue-700 mr-3" onclick="editLandingPage('夏季促销活动')">
+             <i class="fas fa-edit">
+             </i>
+            </button>
+            <button class="text-red-500 hover:text-red-700" onclick="deleteLandingPage('夏季促销活动')">
+             <i class="fas fa-trash-alt">
+             </i>
+            </button>
+            <button class="text-purple-500 hover:text-purple-700" onclick="showLandingPageLink('http://example.com/summer-sale')">
+             <i class="fas fa-link">
+             </i>
+            </button>
+           </td>
+          </tr>
+          <!-- 更多落地页行 -->
+         </tbody>
+        </table>
+       </div>
+      </div>
+     </section>
+     <!-- 落地页审核 -->
+     <section class="content-section hidden" id="landing-page-audit">
+      <div class="bg-white p-6 rounded-lg shadow-md">
+       <h2 class="text-2xl font-semibold mb-6 text-gray-800">
+        落地页审核
+       </h2>
+       <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+         <thead>
+          <tr class="bg-gray-100 text-left text-gray-600 uppercase text-sm leading-normal">
+           <th class="py-3 px-6">
+            落地页名称
+           </th>
+           <th class="py-3 px-6">
+            模板
+           </th>
+           <th class="py-3 px-6">
+            创建人
+           </th>
+           <th class="py-3 px-6">
+            创建时间
+           </th>
+           <th class="py-3 px-6">
+            操作
+           </th>
+          </tr>
+         </thead>
+         <tbody class="text-gray-700 text-sm font-light">
+          <tr class="border-b border-gray-200 hover:bg-gray-50">
+           <td class="py-3 px-6">
+            新品发布预告
+           </td>
+           <td class="py-3 px-6">
+            科技风模板
+           </td>
+           <td class="py-3 px-6">
+            user3
+           </td>
+           <td class="py-3 px-6">
+            2023-05-10 10:00:00
+           </td>
+           <td class="py-3 px-6">
+            <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-md mr-2" onclick="auditLandingPage('新品发布预告', 'approve')">
+             <i class="fas fa-check mr-1">
+             </i>
+             审核通过
+            </button>
+            <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md mr-2" onclick="auditLandingPage('新品发布预告', 'reject')">
+             <i class="fas fa-times mr-1">
+             </i>
+             驳回
+            </button>
+            <button class="text-blue-500 hover:text-blue-700" onclick="editLandingPage('新品发布预告')">
+             <i class="fas fa-edit">
+             </i>
+             修改
+            </button>
+           </td>
+          </tr>
+          <tr class="border-b border-gray-200 hover:bg-gray-50">
+           <td class="py-3 px-6">
+            会员专属福利
+           </td>
+           <td class="py-3 px-6">
+            会员专属模板
+           </td>
+           <td class="py-3 px-6">
+            user4
+           </td>
+           <td class="py-3 px-6">
+            2023-05-08 15:00:00
+           </td>
+           <td class="py-3 px-6">
+            <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-md mr-2" onclick="auditLandingPage('会员专属福利', 'approve')">
+             <i class="fas fa-check mr-1">
+             </i>
+             审核通过
+            </button>
+            <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md mr-2" onclick="auditLandingPage('会员专属福利', 'reject')">
+             <i class="fas fa-times mr-1">
+             </i>
+             驳回
+            </button>
+            <button class="text-blue-500 hover:text-blue-700" onclick="editLandingPage('会员专属福利')">
+             <i class="fas fa-edit">
+             </i>
+             修改
+            </button>
+           </td>
+          </tr>
+          <!-- 更多待审核落地页行 -->
+         </tbody>
+        </table>
+       </div>
+      </div>
+     </section>
+     <!-- 系统日志 -->
+     <section class="content-section hidden" id="system-logs">
+      <div class="bg-white p-6 rounded-lg shadow-md">
+       <h2 class="text-2xl font-semibold mb-6 text-gray-800">
+        系统日志
+       </h2>
+       <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+         <thead>
+          <tr class="bg-gray-100 text-left text-gray-600 uppercase text-sm leading-normal">
+           <th class="py-3 px-6">
+            类型
+           </th>
+           <th class="py-3 px-6">
+            详情
+           </th>
+           <th class="py-3 px-6">
+            操作人
+           </th>
+           <th class="py-3 px-6">
+            时间
+           </th>
+          </tr>
+         </thead>
+         <tbody class="text-gray-700 text-sm font-light">
+          <tr class="border-b border-gray-200 hover:bg-gray-50">
+           <td class="py-3 px-6">
+            用户管理
+           </td>
+           <td class="py-3 px-6">
+            创建用户: user5
+           </td>
+           <td class="py-3 px-6">
+            admin
+           </td>
+           <td class="py-3 px-6">
+            2023-05-15 09:30:00
+           </td>
+          </tr>
+          <tr class="border-b border-gray-200 hover:bg-gray-50">
+           <td class="py-3 px-6">
+            落地页管理
+           </td>
+           <td class="py-3 px-6">
+            创建落地页: 新品发布预告
+           </td>
+           <td class="py-3 px-6">
+            user3
+           </td>
+           <td class="py-3 px-6">
+            2023-05-10 10:00:00
+           </td>
+          </tr>
+          <tr class="border-b border-gray-200 hover:bg-gray-50">
+           <td class="py-3 px-6">
+            落地页审核
+           </td>
+           <td class="py-3 px-6">
+            审核通过落地页: 夏季促销活动
+           </td>
+           <td class="py-3 px-6">
+            admin
+           </td>
+           <td class="py-3 px-6">
+            2023-04-12 16:00:00
+           </td>
+          </tr>
+          <!-- 更多日志行 -->
+         </tbody>
+        </table>
+       </div>
+      </div>
+     </section>
+    </div>
+   </main>
+  </div>
+  <!-- Modals -->
+  <!-- 添加用户模态框 -->
+  <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 hidden" id="add-user-modal">
+   <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
+    <h3 class="text-2xl font-semibold mb-6 text-gray-800">
+     创建新账户
+    </h3>
+    <form onsubmit="event.preventDefault(); createUser();">
+     <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="new-username">
+       用户名:
+      </label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="new-username" required="" type="text"/>
+     </div>
+     <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="new-password">
+       密码:
+      </label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="new-password" required="" type="password"/>
+     </div>
+     <div class="mb-6">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="new-role">
+       角色:
+      </label>
+      <select class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="new-role">
+       <option value="user">
+        普通用户
+       </option>
+       <option value="admin">
+        超管
+       </option>
+      </select>
+     </div>
+     <div class="flex justify-end">
+      <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md mr-2" onclick="closeModal('add-user-modal')" type="button">
+       取消
+      </button>
+      <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md" type="submit">
+       创建
+      </button>
+     </div>
+    </form>
+   </div>
+  </div>
+  <!-- 编辑用户模态框 -->
+  <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 hidden" id="edit-user-modal">
+   <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
+    <h3 class="text-2xl font-semibold mb-6 text-gray-800">
+     编辑账户
+    </h3>
+    <form onsubmit="event.preventDefault(); updateUser();">
+     <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="edit-username">
+       用户名:
+      </label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="edit-username" readonly="" type="text"/>
+     </div>
+     <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="edit-password">
+       新密码 (留空则不修改):
+      </label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="edit-password" type="password"/>
+     </div>
+     <div class="mb-6">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="edit-role">
+       角色:
+      </label>
+      <select class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="edit-role">
+       <option value="user">
+        普通用户
+       </option>
+       <option value="admin">
+        超管
+       </option>
+      </select>
+     </div>
+     <div class="flex justify-end">
+      <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md mr-2" onclick="closeModal('edit-user-modal')" type="button">
+       取消
+      </button>
+      <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md" type="submit">
+       保存
+      </button>
+     </div>
+    </form>
+   </div>
+  </div>
+  <!-- 上传模板模态框 -->
+  <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 hidden" id="upload-template-modal">
+   <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
+    <h3 class="text-2xl font-semibold mb-6 text-gray-800">
+     上传落地页模板
+    </h3>
+    <form onsubmit="event.preventDefault(); uploadTemplate();">
+     <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="template-name">
+       模板名称:
+      </label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="template-name" required="" type="text"/>
+     </div>
+     <div class="mb-6">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="template-file">
+       模板文件夹 (zip):
+      </label>
+<input class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" id="template-file" required="" type="file" webkitdirectory directory/>
+     </div>
+     <div class="flex justify-end">
+      <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md mr-2" onclick="closeModal('upload-template-modal')" type="button">
+       取消
+      </button>
+      <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md" type="submit">
+       上传
+      </button>
+     </div>
+    </form>
+   </div>
+  </div>
+  <!-- 创建落地页模态框 -->
+  <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 hidden" id="create-landing-page-modal">
+   <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
+    <h3 class="text-2xl font-semibold mb-6 text-gray-800">
+     制作新落地页
+    </h3>
+    <form onsubmit="event.preventDefault(); createLandingPage();">
+     <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="lp-name">
+       落地页名称:
+      </label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="lp-name" required="" type="text"/>
+     </div>
+     <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="lp-template">
+       选择模板:
+      </label>
+      <select class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="lp-template">
+       <option value="简约商务模板">
+        简约商务模板
+       </option>
+       <option value="创意活动模板">
+        创意活动模板
+       </option>
+       <!-- 更多模板选项 -->
+      </select>
+     </div>
+     <div class="mb-6">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="lp-images">
+       调整配图 (多选):
+      </label>
+      <input accept="image/*" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" id="lp-images" multiple="" type="file"/>
+      <p class="text-xs text-gray-500 mt-1">
+       选择图片将替换模板中的占位图。
+      </p>
+     </div>
+     <div class="flex justify-end">
+      <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md mr-2" onclick="closeModal('create-landing-page-modal')" type="button">
+       取消
+      </button>
+      <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md" type="submit">
+       确认生成
+      </button>
+     </div>
+    </form>
+   </div>
+  </div>
+  <!-- 落地页链接模态框 -->
+  <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 hidden" id="landing-page-link-modal">
+   <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
+    <h3 class="text-2xl font-semibold mb-6 text-gray-800">
+     落地页链接
+    </h3>
+    <div class="mb-4">
+     <label class="block text-gray-700 text-sm font-bold mb-2" for="lp-display-link">
+      链接地址:
+     </label>
+     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 bg-gray-100 leading-tight focus:outline-none focus:shadow-outline" id="lp-display-link" readonly="" type="text"/>
+    </div>
+    <div class="flex justify-end">
+     <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md" onclick="copyLandingPageLink()" type="button">
+      <i class="fas fa-copy mr-2">
+      </i>
+      复制链接
+     </button>
+     <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md ml-2" onclick="closeModal('landing-page-link-modal')" type="button">
+      关闭
+     </button>
+    </div>
+   </div>
+  </div>
+  <script>
+   // 模拟当前登录用户角色，用于控制权限
+        let currentUserRole = 'admin'; // 'admin' 或 'user'
+        // 页面加载时初始化渲染
+        document.addEventListener('DOMContentLoaded', () => {
+            updateSidebarVisibility();
+            showSection('dashboard'); // 默认显示仪表盘
+            document.getElementById('username').textContent = currentUserRole === 'admin' ? 'Admin' : '普通用户';
+            initDashboardCharts();
+        });
+        function updateSidebarVisibility() {
+            const adminElements = document.querySelectorAll('.admin-only');
+            if (currentUserRole === 'admin') {
+                adminElements.forEach(el => el.classList.remove('hidden'));
+            } else {
+                adminElements.forEach(el => el.classList.add('hidden'));
+            }
+        }
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+            const pageTitle = document.getElementById('page-title');
+            switch (sectionId) {
+                case 'dashboard':
+                    pageTitle.textContent = '仪表盘';
+                    break;
+                case 'user-management':
+                    pageTitle.textContent = '人员管理';
+                    break;
+                case 'template-management':
+                    pageTitle.textContent = '落地页模板管理';
+                    break;
+                case 'landing-page-management':
+                    pageTitle.textContent = '落地页管理';
+                    break;
+                case 'landing-page-audit':
+                    pageTitle.textContent = '落地页审核';
+                    break;
+                case 'system-logs':
+                    pageTitle.textContent = '系统日志';
+                    break;
+                default:
+                    pageTitle.textContent = '管理系统';
+            }
+        }
+        function openModal(modalId, data = {}) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('hidden');
+            if (modalId === 'edit-user-modal' && data.username) {
+                document.getElementById('edit-username').value = data.username;
+                document.getElementById('edit-role').value = data.role;
+                document.getElementById('edit-password').value = ''; // 清空密码
+            }
+        }
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+        // 用户管理功能
+        function createUser() {
+            const username = document.getElementById('new-username').value;
+            const password = document.getElementById('new-password').value;
+            const role = document.getElementById('new-role').value;
+            console.log(`创建用户: 用户名=${username}, 密码=${password}, 角色=${role}`);
+            alert(`用户 ${username} 创建成功！`);
+            closeModal('add-user-modal');
+            // 实际应用中会发送API请求
+        }
+        function updateUser() {
+            const username = document.getElementById('edit-username').value;
+            const newPassword = document.getElementById('edit-password').value;
+            const role = document.getElementById('edit-role').value;
+            console.log(`更新用户: 用户名=${username}, 新密码=${newPassword ? '已修改' : '未修改'}, 角色=${role}`);
+            alert(`用户 ${username} 更新成功！`);
+            closeModal('edit-user-modal');
+            // 实际应用中会发送API请求
+        }
+        function deleteUser(username) {
+            if (confirm(`确定要删除用户 ${username} 吗？`)) {
+                console.log(`删除用户: ${username}`);
+                alert(`用户 ${username} 已删除！`);
+                // 实际应用中会发送API请求并刷新列表
+            }
+        }
+        // 模板管理功能
+function uploadTemplate() {
+            const templateName = document.getElementById('template-name').value;
+            const templateFiles = document.getElementById('template-file').files;
+            if (templateFiles.length > 0) {
+                console.log(`上传模板: 名称=${templateName}, 包含 ${templateFiles.length} 个文件。`);
+                // 实际应用中，这里需要将这些文件打包上传到服务器
+                // 例如，可以使用 FormData 对象来发送文件
+                const formData = new FormData();
+                formData.append('templateName', templateName);
+                for (let i = 0; i < templateFiles.length; i++) {
+                    formData.append('files', templateFiles[i], templateFiles[i].webkitRelativePath);
+                }
+                // 示例：发送一个模拟的 fetch 请求
+                // fetch('/api/uploadTemplate', {
+                //     method: 'POST',
+                //     body: formData
+                // })
+                // .then(response => response.json())
+                // .then(data => {
+                //     console.log('上传成功:', data);
+                //     alert(`模板 "${templateName}" 上传成功！`);
+                //     closeModal('upload-template-modal');
+                // })
+                // .catch(error => {
+                //     console.error('上传失败:', error);
+                //     alert(`模板 "${templateName}" 上传失败！`);
+                // });
 
-    <body>
-        <main class="container">
-            <h1>Welcome to PakePlus</h1>
-            <form class="row" id="greet-form">
-                <input id="inputValue" placeholder="Enter a something..." />
-            </form>
-            <div class="resultBox">
-                <span>result: </span>
-                <span id="result"></span>
-            </div>
-            <div class="invokeBox">
-                <button id="openUrl">open_url_browser</button>
-                <button id="openUrlNew">open_url_new</button>
-                <button id="runCommand">run_command</button>
-                <button id="downloadFile">download_file</button>
-                <button id="getExeDir">get_exe_dir</button>
-                <button id="getEnvVar">get_env_var</button>
-                <button id="findPort">find_port</button>
-            </div>
-        </main>
-    </body>
+                alert(`模板 "${templateName}" 上传成功！ (模拟上传)`);
+                closeModal('upload-template-modal');
+            } else {
+                alert('请选择一个模板文件夹！');
+            }
+        }
+        function editTemplate(templateName) {
+            alert(`编辑模板: ${templateName}`);
+            // 实际应用中会跳转到编辑页面或弹出编辑模态框
+        }
+        function deleteTemplate(templateName) {
+            if (confirm(`确定要删除模板 "${templateName}" 吗？`)) {
+                console.log(`删除模板: ${templateName}`);
+                alert(`模板 "${templateName}" 已删除！`);
+                // 实际应用中会发送API请求并刷新列表
+            }
+        }
+        // 落地页管理功能
+        function createLandingPage() {
+            const lpName = document.getElementById('lp-name').value;
+            const lpTemplate = document.getElementById('lp-template').value;
+            const lpImages = document.getElementById('lp-images').files;
+            console.log(`制作落地页: 名称=${lpName}, 模板=${lpTemplate}, 配图数量=${lpImages.length}`);
+            alert(`落地页 "${lpName}" 已生成待审核！`);
+            closeModal('create-landing-page-modal');
+            // 实际应用中会发送API请求
+        }
+        function editLandingPage(lpName) {
+            alert(`编辑落地页: ${lpName}`);
+            // 实际应用中会跳转到编辑页面或弹出编辑模态框
+        }
+        function deleteLandingPage(lpName) {
+            if (confirm(`确定要删除落地页 "${lpName}" 吗？`)) {
+                console.log(`删除落地页: ${lpName}`);
+                alert(`落地页 "${lpName}" 已删除！`);
+                // 实际应用中会发送API请求并刷新列表
+            }
+        }
+        function showLandingPageLink(link) {
+            document.getElementById('lp-display-link').value = link;
+            openModal('landing-page-link-modal');
+        }
+        function copyLandingPageLink() {
+            const linkInput = document.getElementById('lp-display-link');
+            linkInput.select();
+            linkInput.setSelectionRange(0, 99999); // For mobile devices
+            document.execCommand('copy');
+            alert('链接已复制到剪贴板！');
+        }
+        // 落地页审核功能
+        function auditLandingPage(lpName, action) {
+            if (action === 'approve') {
+                if (confirm(`确定要审核通过落地页 "${lpName}" 吗？`)) {
+                    console.log(`审核通过落地页: ${lpName}`);
+                    alert(`落地页 "${lpName}" 审核通过，请点击发布！`);
+                    // 实际应用中会发送API请求，并更新状态
+                    // 模拟发布操作
+                    if (confirm(`落地页 "${lpName}" 审核通过，是否立即发布？`)) {
+                        const publishedLink = `http://yourdomain.com/lp/${encodeURIComponent(lpName.replace(/\s/g, '-'))}`;
+                        showLandingPageLink(publishedLink);
+                        console.log(`落地页 "${lpName}" 已发布，链接: ${publishedLink}`);
+                        alert(`落地页 "${lpName}" 已发布！`);
+                    }
+                }
+            } else if (action === 'reject') {
+                if (confirm(`确定要驳回落地页 "${lpName}" 吗？`)) {
+                    console.log(`驳回落地页: ${lpName}`);
+                    alert(`落地页 "${lpName}" 已驳回！`);
+                    // 实际应用中会发送API请求，并更新状态
+                }
+            }
+        }
+        // Echarts 图表初始化
+        function initDashboardCharts() {
+            // 落地页发布趋势图
+            const trendChartDom = document.getElementById('landingPageTrendChart');
+            const trendChart = echarts.init(trendChartDom);
+            const trendOption = {
+                tooltip: {
+                    trigger: 'axis'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['1月', '2月', '3月', '4月', '5月', '6月']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    name: '发布数量',
+                    type: 'line',
+                    data: [120, 150, 180, 220, 200, 250],
+                    smooth: true,
+                    itemStyle: {
+                        color: '#3B82F6' // blue-500
+                    }
+                }]
+            };
+            trendChart.setOption(trendOption);
+            // 落地页状态分布图
+            const statusChartDom = document.getElementById('landingPageStatusChart');
+            const statusChart = echarts.init(statusChartDom);
+            const statusOption = {
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left'
+                },
+                series: [{
+                    name: '落地页状态',
+                    type: 'pie',
+                    radius: '50%',
+                    data: [{
+                        value: 1100,
+                        name: '已发布',
+                        itemStyle: {
+                            color: '#10B981' // green-500
+                        }
+                    }, {
+                        value: 56,
+                        name: '待审核',
+                        itemStyle: {
+                            color: '#F59E0B' // yellow-500
+                        }
+                    }, {
+                        value: 78,
+                        name: '草稿',
+                        itemStyle: {
+                            color: '#6B7280' // gray-500
+                        }
+                    }, {
+                        value: 20,
+                        name: '已驳回',
+                        itemStyle: {
+                            color: '#EF4444' // red-500
+                        }
+                    }],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }]
+            };
+            statusChart.setOption(statusOption);
+            // 窗口大小改变时重置图表大小
+            window.addEventListener('resize', () => {
+                trendChart.resize();
+                statusChart.resize();
+            });
+        }
+  </script>
+ </body>
 </html>
